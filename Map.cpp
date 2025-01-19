@@ -11,7 +11,7 @@ void initializeMap(Map& map)
 	map.contents = new char* [map.height];
 	for (int i = 0; i < map.height; i++)
 	{
-		map.contents[i] = new char[map.width + 1] {'\0'};
+		map.contents[i] = new char[map.width];
 	}
 }
 bool loadMapFromFile(Map& map)
@@ -24,7 +24,7 @@ bool loadMapFromFile(Map& map)
 
 	for (int i = 0; i < map.height; i++)
 	{
-		ifs.getline(map.contents[i], map.width+1);
+		ifs.getline(map.contents[i], map.width);
 	}
 
 	return true;
