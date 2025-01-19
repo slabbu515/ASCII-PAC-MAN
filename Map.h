@@ -2,7 +2,7 @@
 
 struct Map
 {
-	char** map;
+	char** contents;
 	int width;
 	int height;
 };
