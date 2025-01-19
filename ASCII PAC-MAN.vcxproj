@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="ASCII PAC-MAN.cpp" />
     <ClCompile Include="HelperFunctions.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
