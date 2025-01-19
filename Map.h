@@ -6,3 +6,5 @@ struct Map
 	int width;
 	int height;
 };
+
+bool canMoveOn(const Map& map, const Point& position);
