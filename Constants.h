@@ -2,6 +2,8 @@
 
 const int DEFAULT_CONSOLE_COLOUR = 15; //White
 
+const char MAP_FILE_NAME[] = "map.txt";
+
 const char WALL_CHARACTER = '#';
 
 const int PLAYER_COLOUR = 14; //Yellow
