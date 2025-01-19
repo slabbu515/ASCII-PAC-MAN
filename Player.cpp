@@ -1,6 +1,8 @@
+#include <iostream>
 #include "Player.h"
 #include "HelperFunctions.h"
-#include <iostream>
+#include "Constants.h"
+
 using namespace std;
 
 bool initializePlayer(Player& player, const Map& map)
@@ -13,5 +15,12 @@ bool initializePlayer(Player& player, const Map& map)
 		return false;
 	}
 	return true;
+}
+
+void printPlayer(const Player& player, const HANDLE& consoleHandle)
+{
+	SetConsoleTextAttribute(consoleHandle, player.colour);
+	cout << player.symbol;
+	SetConsoleTextAttribute(consoleHandle, DEFAULT_CONSOLE_COLOUR);
 }
 
