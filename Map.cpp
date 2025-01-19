@@ -34,3 +34,13 @@ bool canMoveOn(const Map& map, const Point& position)
 {
 	return map.contents[position.x][position.y] != WALL_CHARACTER;
 }
+
+void deleteMap(Map& map)
+{
+	for (int i = 0; i < map.height; i++)
+	{
+		delete[] map.contents[i];
+	}
+	delete[] map.contents;
+}
+
