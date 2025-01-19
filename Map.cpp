@@ -8,7 +8,7 @@ using namespace std;
 void initializeMap(Map& map)
 {
 	cin >> map.height >> map.width;
-	map.contents = new char* [map.height + 1] {nullptr};
+	map.contents = new char* [map.height];
 	for (int i = 0; i < map.height; i++)
 	{
 		map.contents[i] = new char[map.width + 1] {'\0'};
