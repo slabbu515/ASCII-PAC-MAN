@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Entity.h"
 #include "HelperFunctions.h"
+#include "Constants.h"
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Entity.h"
-#include "HelperFunctions.h"
+#include "Player.h"
 #include "Constants.h"
 
 using namespace std;

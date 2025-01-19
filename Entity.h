@@ -1,6 +1,5 @@
 #pragma once
 #include <windows.h>
-#include "Constants.h"
 #include "Point.h"
 #include "Map.h"
 
