@@ -1,9 +1,9 @@
 #pragma once
+#include "Point.h"
 
 struct Player
 {
-	int x;
-	int y;
+	Point position;
 	char symbol = 'C';
 	char movementDirection;
 };
