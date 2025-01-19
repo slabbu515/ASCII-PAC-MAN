@@ -15,5 +15,5 @@ struct Player
 bool initializePlayer(Player& player, const Map& map);
 void printPlayer(const Player& player, const HANDLE& consoleHandle);
 bool movePlayer(Player& player, const Map& map);
-void changeDirection(Player& player, char newDirection);
+bool changeDirection(Player& player, char newDirection);
 

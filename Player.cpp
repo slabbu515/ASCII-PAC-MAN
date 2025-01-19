@@ -54,3 +54,14 @@ bool movePlayer(Player& player, const Map& map)
 	return false;
 }
 
+bool changeDirection(Player& player, char newDirection)
+{
+	if (newDirection != MOVEMENT_LEFT && newDirection != MOVEMENT_RIGHT && newDirection != MOVEMENT_UP && newDirection != MOVEMENT_DOWN)
+	{
+		return false;
+	}
+	
+	player.movementDirection = newDirection;
+	return true;
+}
+
