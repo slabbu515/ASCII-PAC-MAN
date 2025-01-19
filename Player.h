@@ -6,10 +6,10 @@ struct Player
 {
 	Point position;
 	char symbol = 'C';
-	char movementDirection;
+	char movementDirection = 'A';
 };
 
-void initializePlayer(Player& player, const Map& map);
+bool initializePlayer(Player& player, const Map& map);
 void printPlayer(const Player& player);
 void movePlayer(Player& player, const Map& map);
 void changeDirection(Player& player, char newDirection);
