@@ -2,7 +2,6 @@
 #include <iostream>
 #include "Map.h"
 #include "Constants.h"
-#include "Point.h"
 
 using namespace std;
 
@@ -25,7 +24,7 @@ bool loadMapFromFile(Map& map)
 
 	for (int i = 0; i < map.height; i++)
 	{
-		ifs.getline(map.contents[i], map.width);
+		ifs.getline(map.contents[i], map.width+1);
 	}
 
 	return true;
