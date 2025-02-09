@@ -1,4 +1,5 @@
 #include "HelperFunctions.h"
+#include "Constants.h"
 
 Point getCharacterPosition(const Map& map, char ch)
 {
@@ -17,4 +18,26 @@ Point getCharacterPosition(const Map& map, char ch)
 		}
 	}
 	return charPos;
+}
+
+Point getNextPosition(const Point& currentPosition, char direction)
+{
+	Point futurePosition = currentPosition;
+
+	switch (direction)
+	{
+	case MOVEMENT_LEFT:
+		futurePosition.x--;
+		break;
+	case MOVEMENT_RIGHT:
+		futurePosition.x++;
+		break;
+	case MOVEMENT_UP:
+		futurePosition.y--;
+		break;
+	case MOVEMENT_DOWN:
+		futurePosition.y++;
+		break;
+	}
+	return futurePosition;
 }

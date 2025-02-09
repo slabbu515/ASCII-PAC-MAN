@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Constants.h"
+#include "HelperFunctions.h"
 
 using namespace std;
 
@@ -38,23 +39,7 @@ void consumeEnergizer(const Entity& player, Map& map, int& timer, bool& frighten
 
 bool movePlayer(Entity& player, Map& map, int& timer, bool& frightenedState, size_t& score)
 {
-	Point futurePosition = player.position;
-
-	switch (player.movementDirection)
-	{
-	case MOVEMENT_LEFT:
-		futurePosition.x--;
-		break;
-	case MOVEMENT_RIGHT:
-		futurePosition.x++;
-		break;
-	case MOVEMENT_UP:
-		futurePosition.y--;
-		break;
-	case MOVEMENT_DOWN:
-		futurePosition.y++;
-		break;
-	}
+	Point futurePosition = getNextPosition(player.position, player.movementDirection);
 
 	if (!canMoveOn(map, futurePosition))
 	{
