@@ -42,3 +42,20 @@ Point getNextPosition(const Point& currentPosition, char direction)
 
 	return futurePosition;
 }
+
+char getOppositeDirection(char direction)
+{
+	switch (direction)
+	{
+	case MOVEMENT_LEFT:
+		return MOVEMENT_RIGHT;
+	case MOVEMENT_RIGHT:
+		return MOVEMENT_LEFT;
+	case MOVEMENT_UP:
+		return MOVEMENT_DOWN;
+	case MOVEMENT_DOWN:
+		return MOVEMENT_UP;
+	}
+	
+	return -1;
+}

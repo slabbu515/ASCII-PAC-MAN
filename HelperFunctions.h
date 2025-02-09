@@ -4,3 +4,4 @@
 
 Point getCharacterPosition(const Map& map, char ch);
 Point getNextPosition(const Point& currentPosition, char direction);
+char getOppositeDirection(char direction);
