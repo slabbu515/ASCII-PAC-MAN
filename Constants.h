@@ -8,6 +8,7 @@ const char WALL_CHARACTER = '#';
 
 const int PLAYER_COLOUR = 14; //Yellow
 const char PLAYER_SYMBOL = 'C';
+const char BLANK = ' ';
 
 const int ALL_ENTITIES_COUNT = 1;
 
@@ -15,3 +16,4 @@ const char MOVEMENT_LEFT = 'A';
 const char MOVEMENT_RIGHT = 'D';
 const char MOVEMENT_UP = 'W';
 const char MOVEMENT_DOWN = 'S';
+const char ESC_CHAR = 27;
