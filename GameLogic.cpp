@@ -65,9 +65,11 @@ void tickFrightened(bool& frightenedState, int& timer)
 	if (timer > 0)
 	{
 		timer--;
-		return;
 	}
-	frightenedState = false;
+	if (timer == 0)
+	{
+		frightenedState = false;
+	}
 }
 
 void startGame()
@@ -107,7 +109,7 @@ void startGame()
 		printMap(map, allEntities, consoleHandle);
 		cout << endl;
 		cout << "State: " << frightened << endl;
-		if (frightened) cout << "Time remaining: " << frightenedTimer << endl;
+		cout << "Time remaining: " << frightenedTimer << ' ' << endl;
 
 		if (!readInput(player, isGameOver))
 		{
@@ -120,12 +122,11 @@ void startGame()
 
 		if (frightened)
 		{
-			movePlayer(player, map, frightenedTimer, frightened, score);
 			tickFrightened(frightened, frightenedTimer);
+			movePlayer(player, map, frightenedTimer, frightened, score); //returns bool?
 		}
-
 		movePlayer(player, map, frightenedTimer, frightened, score);
-		
+
 		//Move Ghosts
 	}
 }

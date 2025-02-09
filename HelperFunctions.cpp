@@ -39,5 +39,6 @@ Point getNextPosition(const Point& currentPosition, char direction)
 		futurePosition.y++;
 		break;
 	}
+
 	return futurePosition;
 }
