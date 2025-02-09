@@ -1,14 +1,15 @@
 #include <iostream>
 #include "GameLogic.h"
 #include "Constants.h"
+#include "Player.h"
 
 using namespace std;
 
 void printMap(const Map& map, const Entity* const* allEntities, const HANDLE& consoleHandle)
 {
-    for (int i = 0; i < map.height; i++)
+    for (int j = 0; j < map.height; j++)
     {
-        for (int j = 0; j < map.width; j++)
+        for (int i = 0; i < map.width; i++)
         {
             bool foundEntity = false;
 
@@ -27,6 +28,36 @@ void printMap(const Map& map, const Entity* const* allEntities, const HANDLE& co
         }
         cout << endl;
     }
+}
+
+bool readInput(Entity& player, bool& isGameOver)
+{
+    if (GetAsyncKeyState(MOVEMENT_LEFT) & 1)
+    {
+        player.movementDirection = MOVEMENT_LEFT;
+        return true;
+    }
+    else if (GetAsyncKeyState(MOVEMENT_RIGHT) & 1)
+    {
+        player.movementDirection = MOVEMENT_RIGHT;
+        return true;
+    }
+    else if (GetAsyncKeyState(MOVEMENT_UP) & 1)
+    {
+        player.movementDirection = MOVEMENT_UP;
+        return true;
+    }
+    else if (GetAsyncKeyState(MOVEMENT_DOWN) & 1)
+    {
+        player.movementDirection = MOVEMENT_DOWN;
+        return true;
+    }
+    else if (GetAsyncKeyState(ESC_CHAR) & 1)
+    {
+        isGameOver = true;
+        return true;
+    }
+    return false;
 }
 
 void startGame()
@@ -53,12 +84,20 @@ void startGame()
 
     Entity* allEntities[ALL_ENTITIES_COUNT]{ &player };
 
-    while (true)
+    bool isGameOver = false;
+
+    while (!isGameOver)
     {
         SetConsoleCursorPosition(consoleHandle, { 0, 0 });
-        //Read input
-        //
+        if (readInput(player, isGameOver))
+        {
+            if (!isGameOver)
+            {
+                movePlayer(player, map);
+                //Move Ghosts
+            }
+        }
+        //Add print score 
         printMap(map, allEntities, consoleHandle);
-        
     }
 }
