@@ -5,6 +5,17 @@
 
 using namespace std;
 
+char getCharacter(const Map& map, const Point& position)
+{
+	if (position.x >= map.width || position.y >= map.height)
+	{
+		cout << "Invalid position in getCharacter()";
+		return -1;
+	}
+
+	return map.contents[position.x][position.y];
+}
+
 bool setCharacter(Map& map, char c, const Point& position)
 {
 	if (position.x >= map.width || position.y >= map.height)

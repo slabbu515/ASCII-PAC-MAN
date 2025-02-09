@@ -8,6 +8,7 @@ struct Map
 	int height;
 };
 
+char getCharacter(const Map& map, const Point& position);
 bool setCharacter(Map& map, char c, const Point& position);
 void initializeMap(Map& map);
 bool loadMapFromFile(Map& map);
