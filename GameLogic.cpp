@@ -60,19 +60,14 @@ bool readInput(Entity& player, bool& isGameOver)
 	return false;
 }
 
-bool canConsumePoint(const Entity& player, const Map& map)
+void tickFrightened(bool& frightenedState, int& timer)
 {
-	return getCharacter(map, player.position) == POINT_CHARACTER;
-}
-
-void consumePoint(const Entity& player, Map& map, size_t& score)
-{
-	if (!setCharacter(map, BLANK, player.position))
+	if (timer > 0)
 	{
-		cout << "Error in consumePoint()!";
+		timer--;
 		return;
 	}
-	score++;
+	frightenedState = false;
 }
 
 void startGame()
@@ -100,13 +95,19 @@ void startGame()
 	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player };
 
 	bool isGameOver = false;
+	bool frightened = false;
+	int frightenedTimer = FRIGHTENED_TIMER;
 	size_t score = 0;
+
 
 	while (!isGameOver)
 	{
 		SetConsoleCursorPosition(consoleHandle, { 0, 0 });
 		cout << "Score: " << score << endl;
 		printMap(map, allEntities, consoleHandle);
+		cout << endl;
+		cout << "State: " << frightened << endl;
+		if (frightened) cout << "Time remaining: " << frightenedTimer << endl;
 
 		if (!readInput(player, isGameOver))
 		{
@@ -117,12 +118,14 @@ void startGame()
 			break;
 		}
 
-		movePlayer(player, map);
-		if (canConsumePoint(player, map))
+		if (frightened)
 		{
-			consumePoint(player, map, score);
+			movePlayer(player, map, frightenedTimer, frightened, score);
+			tickFrightened(frightened, frightenedTimer);
 		}
 
+		movePlayer(player, map, frightenedTimer, frightened, score);
+		
 		//Move Ghosts
 	}
 }
