@@ -57,7 +57,8 @@ void startGame()
     {
         SetConsoleCursorPosition(consoleHandle, { 0, 0 });
         //Read input
+        //
         printMap(map, allEntities, consoleHandle);
-        Sleep(100);
+        
     }
 }
