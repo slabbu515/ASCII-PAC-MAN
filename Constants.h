@@ -14,6 +14,7 @@ const char PLAYER_SYMBOL = 'C';
 const char BLANK = ' ';
 
 const int ALL_ENTITIES_COUNT = 1;
+const int FRIGHTENED_TIMER = 10;
 
 const char MOVEMENT_LEFT = 'A';
 const char MOVEMENT_RIGHT = 'D';
