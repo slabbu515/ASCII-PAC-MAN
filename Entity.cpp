@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool initializeEntity(Entity& entity, const Map& map, int entityColour, char entitySymbol, char entityDirection)
+bool initializeEntity(Entity& entity, Map& map, int entityColour, char entitySymbol, char entityDirection)
 {
 	entity.position = getCharacterPosition(map, entitySymbol);
 	entity.symbol = entitySymbol;
@@ -17,7 +17,10 @@ bool initializeEntity(Entity& entity, const Map& map, int entityColour, char ent
 		cout << "Map doesn't contain entity!";
 		return false;
 	}
-
+	if (!setCharacter(map, BLANK, entity.position)) //refactor?
+	{
+		return false;
+	}
 	return true;
 }
 

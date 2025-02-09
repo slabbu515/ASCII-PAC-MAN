@@ -11,6 +11,6 @@ struct Entity
 	char movementDirection;
 };
 
-bool initializeEntity(Entity& entity, const Map& map, int entityColour, char entitySymbol, char entityDirection);
+bool initializeEntity(Entity& entity, Map& map, int entityColour, char entitySymbol, char entityDirection);
 void printEntity(const Entity& entity, const HANDLE& consoleHandle);
 bool changeDirection(Entity& entity, char newDirection);
