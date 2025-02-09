@@ -2,6 +2,7 @@
 #include "GameLogic.h"
 #include "Constants.h"
 #include "Player.h"
+#include "Ghosts.h"
 
 using namespace std;
 
@@ -82,8 +83,12 @@ void startGame()
 		return;
 	}
 
+	//Add function load entities
 	Entity player;
 	if (!initializeEntity(player, map, PLAYER_COLOUR, PLAYER_SYMBOL, MOVEMENT_LEFT))
+		return;
+	Entity blinky;
+	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_LEFT))
 		return;
 
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -94,7 +99,7 @@ void startGame()
 	cursor.bVisible = 0;
 	SetConsoleCursorInfo(consoleHandle, &cursor);
 
-	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player };
+	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky };
 
 	bool isGameOver = false;
 	bool frightened = false;
@@ -125,8 +130,9 @@ void startGame()
 			tickFrightened(frightened, frightenedTimer);
 			movePlayer(player, map, frightenedTimer, frightened, score); //returns bool?
 		}
-		movePlayer(player, map, frightenedTimer, frightened, score);
 
+		movePlayer(player, map, frightenedTimer, frightened, score);
+		moveBlinky(blinky, map, allEntities);
 		//Move Ghosts
 	}
 }

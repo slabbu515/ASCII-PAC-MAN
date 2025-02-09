@@ -8,7 +8,7 @@ struct Entity
 	Point position;
 	int colour;
 	char symbol;
-	char movementDirection;
+	char movementDirection; //Obsolete
 };
 
 bool initializeEntity(Entity& entity, Map& map, int entityColour, char entitySymbol, char entityDirection);
