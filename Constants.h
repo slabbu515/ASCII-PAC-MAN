@@ -10,6 +10,7 @@ const char ENERGIZER_CHARACTER = '@';
 
 const int PLAYER_COLOUR = 14; //Yellow
 const char PLAYER_SYMBOL = 'C';
+const char BLINKY_SYMBOL = 'B';
 
 const char BLANK = ' ';
 
