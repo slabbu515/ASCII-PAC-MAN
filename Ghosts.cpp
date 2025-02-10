@@ -82,3 +82,16 @@ void moveInky(Entity& inky, const Map& map, const Entity* const* allEntities, co
 	Point targetPosition = getReversedVector(allEntities[BLINKY_INDEX]->position, futurePlayerPosition);
 	moveBlinky(inky, map, allEntities, targetPosition, cageEntrance, hasLeftCage);
 }
+
+void moveClyde(Entity& clyde, const Map& map, const Entity* const* allEntities, const Point& cageEntrance, bool& hasLeftCage)
+{
+	if (distance(clyde.position, allEntities[PLAYER_INDEX]->position) > CLYDE_DISTANCE)
+	{
+		moveBlinky(clyde, map, allEntities, allEntities[PLAYER_INDEX]->position, cageEntrance, hasLeftCage);
+	}
+	else
+	{
+		Point leftCorner{ 1, map.height - 2 };
+		moveBlinky(clyde, map, allEntities, leftCorner, cageEntrance, hasLeftCage);
+	}
+}

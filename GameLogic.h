@@ -8,4 +8,5 @@ bool readInput(Entity& player, bool& isGameOver);
 bool overlappingWithGhost(const Entity* const* allEntities);
 void eatGhost(Entity* const* allEntities);
 void tickFrightened(bool& frightenedState, int& timer);
+void loadEntities(Map& map, Entity& player, Entity& blinky, Entity& pinky, Entity& inky, Entity& clyde);
 void startGame();

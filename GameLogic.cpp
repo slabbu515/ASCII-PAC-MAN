@@ -96,6 +96,20 @@ void tickFrightened(bool& frightenedState, int& timer)
 	}
 }
 
+void loadEntities(Map& map, Entity& player, Entity& blinky, Entity& pinky, Entity& inky, Entity& clyde)
+{
+	if (!initializeEntity(player, map, PLAYER_COLOUR, PLAYER_SYMBOL, MOVEMENT_LEFT))
+		return;
+	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_DOWN))
+		return;
+	if (!initializeEntity(pinky, map, PINKY_COLOUR, PINKY_SYMBOL, MOVEMENT_UP))
+		return;
+	if (!initializeEntity(inky, map, INKY_COLOUR, INKY_SYMBOL, MOVEMENT_UP))
+		return;
+	if (!initializeEntity(clyde, map, CLYDE_COLOUR, CLYDE_SYMBOL, MOVEMENT_UP))
+		return;
+}
+
 void startGame()
 {
 	Map map;
@@ -107,20 +121,11 @@ void startGame()
 	}
 
 	Point cageEntrance = getCharacterPosition(map, BLINKY_SYMBOL);
-	//Add function load entities
-	Entity player;
-	if (!initializeEntity(player, map, PLAYER_COLOUR, PLAYER_SYMBOL, MOVEMENT_LEFT))
-		return;
-	Entity blinky;
-	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_DOWN))
-		return;
-	Entity pinky;
-	if (!initializeEntity(pinky, map, PINKY_COLOUR, PINKY_SYMBOL, MOVEMENT_UP))
-		return;
-	Entity inky;
-	if (!initializeEntity(inky, map, INKY_COLOUR, INKY_SYMBOL, MOVEMENT_UP))
-		return;
 
+	Entity player, blinky, pinky, inky, clyde;
+	loadEntities(map, player, blinky, pinky, inky, clyde);
+	
+	//Handle to manipulate console output
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
 	//Removes cursor in the console
@@ -130,11 +135,13 @@ void startGame()
 	SetConsoleCursorInfo(consoleHandle, &cursor);
 
 	bool hasLeftCage[ALL_ENTITIES_COUNT - 1]{};
-	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky, &pinky, &inky };
+	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky, &pinky, &inky, &clyde};
 
 	bool isGameOver = false;
 	bool frightened = false;
 	int frightenedTimer = FRIGHTENED_TIMER;
+	//Add a way to calculate the winning score,
+	//probably a point that contains - and @ counters and when they're both 0 = win
 	size_t score = 0;
 
 
@@ -173,21 +180,23 @@ void startGame()
 		if (frightened)
 		{
 			tickFrightened(frightened, frightenedTimer);
-			movePlayer(player, map, frightenedTimer, frightened, score); 
+			movePlayer(player, map, frightenedTimer, frightened, score);
 			if (overlappingWithGhost(allEntities))
 			{
 				eatGhost(allEntities);
 			}
 		}
 
+		//Add function moveGhosts() with the overlapping check in frightened!
+		//Add function that randomizes ghost movement when frightened
 		movePlayer(player, map, frightenedTimer, frightened, score);
-		moveBlinky(blinky, map, allEntities, allEntities[PLAYER_INDEX]->position, cageEntrance, hasLeftCage[BLINKY_INDEX-1]);
-		if(score>=20)
+		moveBlinky(blinky, map, allEntities, allEntities[PLAYER_INDEX]->position, cageEntrance, hasLeftCage[BLINKY_INDEX - 1]);
+		if (score >= 10)
 			movePinky(pinky, map, allEntities, cageEntrance, hasLeftCage[PINKY_INDEX - 1]);
-		if (score >= 30)
+		if (score >= 20)
 			moveInky(inky, map, allEntities, cageEntrance, hasLeftCage[INKY_INDEX - 1]);
-		
-		//Move Other Ghosts
+		if (score >= 30)
+			moveClyde(clyde, map, allEntities, cageEntrance, hasLeftCage[CLYDE_INDEX - 1]);
 	}
 
 	deleteMap(map);
