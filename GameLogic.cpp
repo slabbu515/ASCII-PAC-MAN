@@ -104,11 +104,11 @@ void loadEntities(Map& map, Entity& player, Entity& blinky, Entity& pinky, Entit
 		return;
 	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_DOWN))
 		return;
-	if (!initializeEntity(pinky, map, PINKY_COLOUR, PINKY_SYMBOL, MOVEMENT_UP))
+	if (!initializeEntity(pinky, map, PINKY_COLOUR, PINKY_SYMBOL, MOVEMENT_LEFT))
 		return;
-	if (!initializeEntity(inky, map, INKY_COLOUR, INKY_SYMBOL, MOVEMENT_UP))
+	if (!initializeEntity(inky, map, INKY_COLOUR, INKY_SYMBOL, MOVEMENT_LEFT))
 		return;
-	if (!initializeEntity(clyde, map, CLYDE_COLOUR, CLYDE_SYMBOL, MOVEMENT_UP))
+	if (!initializeEntity(clyde, map, CLYDE_COLOUR, CLYDE_SYMBOL, MOVEMENT_RIGHT))
 		return;
 }
 
@@ -166,8 +166,9 @@ void moveGhosts(const Map& map, Entity* const* allEntities, const Point& cageEnt
 void startGame()
 {
 	Map map;
+	Point maxScore{ 0,0 };
 	initializeMap(map);
-	if (!loadMapFromFile(map))
+	if (!loadMapFromFile(map, maxScore))
 	{
 		cout << "Error reading Map from file!";
 		return;
@@ -193,8 +194,6 @@ void startGame()
 	bool isGameOver = false;
 	bool frightened = false;
 	int frightenedTimer = FRIGHTENED_TIMER;
-	//Add a way to calculate the winning score,
-	//probably a point that contains - and @ counters and when they're both 0 = win
 	size_t score = 0;
 
 	while (!isGameOver)
@@ -203,9 +202,6 @@ void startGame()
 		cout << "Score: " << score << endl;
 		printMap(map, allEntities, consoleHandle);
 		cout << endl;
-		//Remove State and Time remaining
-		cout << "State: " << frightened << endl;
-		cout << "Time remaining: " << frightenedTimer << ' ' << endl;
 
 		if (overlappingWithGhost(allEntities))
 		{
@@ -220,6 +216,7 @@ void startGame()
 			}
 		}
 
+		//If we exit manually by pressing escape
 		if (!readInput(player, isGameOver))
 		{
 			continue;
@@ -232,15 +229,21 @@ void startGame()
 		if (frightened)
 		{
 			tickFrightened(frightened, frightenedTimer);
-			movePlayer(player, allEntities, map, frightenedTimer, frightened, score);
+			movePlayer(player, allEntities, map, frightenedTimer, frightened, score, maxScore);
 			if (overlappingWithGhost(allEntities))
 			{
 				eatGhost(allEntities);
 			}
 		}
 
-		movePlayer(player, allEntities, map, frightenedTimer, frightened, score);
+		movePlayer(player, allEntities, map, frightenedTimer, frightened, score, maxScore);
 		moveGhosts(map, allEntities, cageEntrance, hasLeftCage, score, frightened);
+
+		if (maxScore.x == 0 && maxScore.y == 0)
+		{
+			cout << "Victory!";
+			break;
+		}
 	}
 
 	deleteMap(map);
