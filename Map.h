@@ -11,6 +11,6 @@ struct Map
 char getCharacter(const Map& map, const Point& position);
 bool setCharacter(Map& map, char c, const Point& position);
 void initializeMap(Map& map);
-bool loadMapFromFile(Map& map);
+bool loadMapFromFile(Map& map, Point& score);
 bool canMoveOn(const Map& map, const Point& position);
 void deleteMap(Map& map);

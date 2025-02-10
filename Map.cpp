@@ -37,7 +37,7 @@ void initializeMap(Map& map)
 		map.contents[i] = new char[map.height]; 
 	}
 }
-bool loadMapFromFile(Map& map)
+bool loadMapFromFile(Map& map, Point& score)
 {
 	ifstream ifs(MAP_FILE_NAME);
 	if (!ifs.is_open())
@@ -50,6 +50,10 @@ bool loadMapFromFile(Map& map)
 		for (int i = 0; i < map.width; i++)
 		{
 			map.contents[i][j]=ifs.get();
+			if (map.contents[i][j] == POINT_CHARACTER)
+				score.x++;
+			if (map.contents[i][j] == ENERGIZER_CHARACTER)
+				score.y++;
 		}
 		ifs.ignore();
 	}
