@@ -1,4 +1,6 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 #include "GameLogic.h"
 #include "Constants.h"
 #include "Player.h"
@@ -110,6 +112,57 @@ void loadEntities(Map& map, Entity& player, Entity& blinky, Entity& pinky, Entit
 		return;
 }
 
+void randomMovement(const Map& map, Entity* const* allEntities, const Point& cageEntrance, bool hasLeftCage, Entity& current)
+{
+	srand(time(NULL));
+	char opposite = getOppositeDirection(current.movementDirection);
+	while (true)
+	{
+		int random = rand() % MOVEMENTS_COUNT;
+		Point futurePosition = getNextPosition(current.position, MOVEMENTS[random]);
+		if (MOVEMENTS[random] != opposite && canMoveOn(map, futurePosition)  && !willStepOnGhost(allEntities, futurePosition))
+		{
+			if (!areCoincident(cageEntrance, current.position) || (areCoincident(cageEntrance, current.position) && !hasLeftCage))
+			{
+				if (areCoincident(cageEntrance, current.position) && !hasLeftCage)
+					hasLeftCage = true;
+
+				current.position.x = futurePosition.x;
+				current.position.y = futurePosition.y;
+				break;
+			}
+		}
+	}
+}
+
+void moveGhosts(const Map& map, Entity* const* allEntities, const Point& cageEntrance, bool* hasLeftCage, size_t score, bool frightened)
+{
+	if (!frightened)
+	{
+		moveBlinky(*allEntities[BLINKY_INDEX], map, allEntities, allEntities[PLAYER_INDEX]->position, cageEntrance, hasLeftCage[BLINKY_INDEX - 1]);
+		if (score >= PINKY_THRESHOLD)
+			movePinky(*allEntities[PINKY_INDEX], map, allEntities, cageEntrance, hasLeftCage[PINKY_INDEX - 1]);
+		if (score >= INKY_THRESHOLD)
+			moveInky(*allEntities[INKY_INDEX], map, allEntities, cageEntrance, hasLeftCage[INKY_INDEX - 1]);
+		if (score >= CLYDE_THRESHOLD)
+			moveClyde(*allEntities[CLYDE_INDEX], map, allEntities, cageEntrance, hasLeftCage[CLYDE_INDEX - 1]);
+	}
+	else
+	{
+		for (int i = 1; i < ALL_ENTITIES_COUNT; i++)
+		{
+			if (overlappingWithGhost(allEntities))
+			{
+				eatGhost(allEntities);
+			}
+			if (score >= THRESHOLDS[i - 1])
+			{
+				randomMovement(map, allEntities, cageEntrance, hasLeftCage[i], *allEntities[i]);
+			}
+		}
+	}
+}
+
 void startGame()
 {
 	Map map;
@@ -143,7 +196,6 @@ void startGame()
 	//Add a way to calculate the winning score,
 	//probably a point that contains - and @ counters and when they're both 0 = win
 	size_t score = 0;
-
 
 	while (!isGameOver)
 	{
@@ -180,23 +232,15 @@ void startGame()
 		if (frightened)
 		{
 			tickFrightened(frightened, frightenedTimer);
-			movePlayer(player, map, frightenedTimer, frightened, score);
+			movePlayer(player, allEntities, map, frightenedTimer, frightened, score);
 			if (overlappingWithGhost(allEntities))
 			{
 				eatGhost(allEntities);
 			}
 		}
 
-		//Add function moveGhosts() with the overlapping check in frightened!
-		//Add function that randomizes ghost movement when frightened
-		movePlayer(player, map, frightenedTimer, frightened, score);
-		moveBlinky(blinky, map, allEntities, allEntities[PLAYER_INDEX]->position, cageEntrance, hasLeftCage[BLINKY_INDEX - 1]);
-		if (score >= 10)
-			movePinky(pinky, map, allEntities, cageEntrance, hasLeftCage[PINKY_INDEX - 1]);
-		if (score >= 20)
-			moveInky(inky, map, allEntities, cageEntrance, hasLeftCage[INKY_INDEX - 1]);
-		if (score >= 30)
-			moveClyde(clyde, map, allEntities, cageEntrance, hasLeftCage[CLYDE_INDEX - 1]);
+		movePlayer(player, allEntities, map, frightenedTimer, frightened, score);
+		moveGhosts(map, allEntities, cageEntrance, hasLeftCage, score, frightened);
 	}
 
 	deleteMap(map);
