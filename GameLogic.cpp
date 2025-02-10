@@ -3,6 +3,7 @@
 #include "Constants.h"
 #include "Player.h"
 #include "Ghosts.h"
+#include "HelperFunctions.h"
 
 using namespace std;
 
@@ -61,6 +62,28 @@ bool readInput(Entity& player, bool& isGameOver)
 	return false;
 }
 
+bool overlappingWithGhost(const Entity* const* allEntities)
+{
+	for (int i = BLINKY_INDEX; i < ALL_ENTITIES_COUNT; i++)
+	{
+		if(areCoincident(allEntities[PLAYER_INDEX]->position, allEntities[i]->position))
+			return true;
+	}
+	return false;
+}
+
+void eatGhost(Entity* const* allEntities)
+{
+	for (int i = BLINKY_INDEX; i < ALL_ENTITIES_COUNT; i++)
+	{
+		if (areCoincident(allEntities[PLAYER_INDEX]->position, allEntities[i]->position))
+		{
+			allEntities[i]->position.x = allEntities[i]->respawnPosition.x;
+			allEntities[i]->position.y = allEntities[i]->respawnPosition.y;
+		}
+	}
+}
+
 void tickFrightened(bool& frightenedState, int& timer)
 {
 	if (timer > 0)
@@ -83,12 +106,13 @@ void startGame()
 		return;
 	}
 
+	Point cageEntrance = getCharacterPosition(map, BLINKY_SYMBOL);
 	//Add function load entities
 	Entity player;
 	if (!initializeEntity(player, map, PLAYER_COLOUR, PLAYER_SYMBOL, MOVEMENT_LEFT))
 		return;
 	Entity blinky;
-	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_LEFT))
+	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_DOWN))
 		return;
 
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -99,6 +123,9 @@ void startGame()
 	cursor.bVisible = 0;
 	SetConsoleCursorInfo(consoleHandle, &cursor);
 
+	//To do: Add hasLeftCage to moveBlinky, fix moveBlinky
+
+	bool hasLeftCage[ALL_ENTITIES_COUNT - 1]{};
 	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky };
 
 	bool isGameOver = false;
@@ -113,8 +140,22 @@ void startGame()
 		cout << "Score: " << score << endl;
 		printMap(map, allEntities, consoleHandle);
 		cout << endl;
+		//Remove State and Time remaining
 		cout << "State: " << frightened << endl;
 		cout << "Time remaining: " << frightenedTimer << ' ' << endl;
+
+		if (overlappingWithGhost(allEntities))
+		{
+			if (frightened)
+			{
+				eatGhost(allEntities);
+			}
+			else
+			{
+				cout << "Game over!";
+				break;
+			}
+		}
 
 		if (!readInput(player, isGameOver))
 		{
@@ -128,11 +169,17 @@ void startGame()
 		if (frightened)
 		{
 			tickFrightened(frightened, frightenedTimer);
-			movePlayer(player, map, frightenedTimer, frightened, score); //returns bool?
+			movePlayer(player, map, frightenedTimer, frightened, score); 
+			if (overlappingWithGhost(allEntities))
+			{
+				eatGhost(allEntities);
+			}
 		}
 
 		movePlayer(player, map, frightenedTimer, frightened, score);
-		moveBlinky(blinky, map, allEntities);
-		//Move Ghosts
+		moveBlinky(blinky, map, allEntities, cageEntrance);
+		//Move Other Ghosts
 	}
+
+	deleteMap(map);
 }
