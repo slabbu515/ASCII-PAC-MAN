@@ -37,13 +37,13 @@ void consumeEnergizer(const Entity& player, Map& map, int& timer, bool& frighten
 	timer = FRIGHTENED_TIMER;
 }
 
-bool movePlayer(Entity& player, Map& map, int& timer, bool& frightenedState, size_t& score)
+void movePlayer(Entity& player, Map& map, int& timer, bool& frightenedState, size_t& score)
 {
 	Point futurePosition = getNextPosition(player.position, player.movementDirection);
 
 	if (!canMoveOn(map, futurePosition))
 	{
-		return false;
+		return;
 	}
 
 	player.position = futurePosition;
@@ -55,5 +55,4 @@ bool movePlayer(Entity& player, Map& map, int& timer, bool& frightenedState, siz
 	{
 		consumeEnergizer(player, map, timer, frightenedState);
 	}
-	return true;
 }
