@@ -34,7 +34,7 @@ void printEntity(const Entity& entity, const HANDLE& consoleHandle)
 
 Point findRespawnPoint(char entitySymbol, const Map& map)
 {
-	Point respawnPosition{ 0,0 };
+	Point respawnPosition;
 	switch (entitySymbol)
 	{
 	case BLINKY_SYMBOL:
@@ -46,13 +46,16 @@ Point findRespawnPoint(char entitySymbol, const Map& map)
 		respawnPosition.y = 1;
 		break;
 	case INKY_SYMBOL:
-		respawnPosition.x = map.width - 1;
-		respawnPosition.y = map.height - 1;
+		respawnPosition.x = map.width - 2;
+		respawnPosition.y = map.height - 2;
 		break;
 	case CLYDE_SYMBOL:
 		respawnPosition.x = 1;
-		respawnPosition.y = map.height - 1;;
+		respawnPosition.y = map.height - 2;
 		break;
+	default:
+		respawnPosition.x = 0;
+		respawnPosition.y = 0;
 	}
 
 	return respawnPosition;
