@@ -26,18 +26,23 @@ bool canConsumeEnergizer(const Entity& player, const Map& map)
 	return getCharacter(map, player.position) == ENERGIZER_CHARACTER;
 }
 
-void consumeEnergizer(const Entity& player, Map& map, int& timer, bool& frightenedState)
+void consumeEnergizer(const Entity& player, Entity* const* allEntities, Map& map, int& timer, bool& frightenedState)
 {
 	if (!setCharacter(map, BLANK, player.position))
 	{
 		cout << "Error in consumeEnergizer()!";
 		return;
 	}
+
 	frightenedState = true;
+	for (int i = 1; i < ALL_ENTITIES_COUNT; i++)
+	{
+		allEntities[i]->movementDirection = getOppositeDirection(allEntities[i]->movementDirection);
+	}
 	timer = FRIGHTENED_TIMER;
 }
 
-void movePlayer(Entity& player, Map& map, int& timer, bool& frightenedState, size_t& score)
+void movePlayer(Entity& player, Entity* const* allEntities, Map& map, int& timer, bool& frightenedState, size_t& score)
 {
 	Point futurePosition = getNextPosition(player.position, player.movementDirection);
 
@@ -53,6 +58,6 @@ void movePlayer(Entity& player, Map& map, int& timer, bool& frightenedState, siz
 	}
 	if (canConsumeEnergizer(player, map))
 	{
-		consumeEnergizer(player, map, timer, frightenedState);
+		consumeEnergizer(player, allEntities, map, timer, frightenedState);
 	}
 }
