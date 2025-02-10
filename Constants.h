@@ -15,9 +15,21 @@ const char PLAYER_SYMBOL = 'C';
 const int BLINKY_COLOUR = 4; //Red
 const char BLINKY_SYMBOL = 'B';
 
+const int PINKY_COLOUR = 12; //Pink
+const char PINKY_SYMBOL = 'P';
+
+const int INKY_COLOUR = 1; //Blue
+const char INKY_SYMBOL = 'I';
+
+const int CLYDE_COLOUR = 2; //Green
+const char CLYDE_SYMBOL = 'Y';
+
 const int ALL_ENTITIES_COUNT = 2;
 const int PLAYER_INDEX = 0;
 const int BLINKY_INDEX = 1;
+const int PINKY_INDEX = 2;
+const int INKY_INDEX = 3;
+const int CLYDE_INDEX = 4;
 
 const int FRIGHTENED_TIMER = 10;
 
