@@ -1,4 +1,5 @@
 #include "Point.h"
+#include <cmath>
 
 bool areCoincident(const Point& point, int x, int y)
 {
@@ -23,4 +24,9 @@ Point getReversedVector(const Point& pointA, const Point& pointB)
     revVector.x = pointA.x - pointB.x;
     revVector.y = pointA.y - pointB.y;
     return revVector;
+}
+
+double distance(const Point& pointA, const Point& pointB)
+{
+    return sqrt(squaredDistance(pointA, pointB));
 }
