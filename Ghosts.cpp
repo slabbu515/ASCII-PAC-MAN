@@ -66,3 +66,19 @@ void movePinky(Entity& pinky, const Map& map, const Entity* const* allEntities, 
 	}
 	moveBlinky(pinky, map, allEntities, targetPosition, cageEntrance, hasLeftCage);
 }
+
+void moveInky(Entity& inky, const Map& map, const Entity* const* allEntities, const Point& cageEntrance, bool& hasLeftCage)
+{
+	Point futurePlayerPosition = allEntities[PLAYER_INDEX]->position;
+	for (int i = 0; i < 2; i++)
+	{
+		futurePlayerPosition = getNextPosition(futurePlayerPosition, allEntities[PLAYER_INDEX]->movementDirection);
+	}
+	if (allEntities[PLAYER_INDEX]->movementDirection == MOVEMENT_UP)
+	{
+		futurePlayerPosition.x = futurePlayerPosition.x - 2;
+	}
+
+	Point targetPosition = getReversedVector(allEntities[BLINKY_INDEX]->position, futurePlayerPosition);
+	moveBlinky(inky, map, allEntities, targetPosition, cageEntrance, hasLeftCage);
+}
