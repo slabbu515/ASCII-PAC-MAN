@@ -13,15 +13,18 @@ bool willStepOnGhost(const Entity* const* allEntities, const Point& futurePositi
 	return false;
 }
 
-void moveBlinky(Entity& blinky, const Map& map, const Entity* const* allEntities, const Point& cageEntrance)
+void moveBlinky(Entity& blinky, const Map& map, const Entity* const* allEntities, const Point& targetPosition, const Point& cageEntrance, bool& hasLeftCage)
 {
 	char opposite = getOppositeDirection(blinky.movementDirection);
 	char newDirection=opposite;
 	Point futurePosition = getNextPosition(blinky.position, newDirection);
 	int shortestDistance = -1;
 
-	if (!areCoincident(cageEntrance, blinky.position))
+	if (!areCoincident(cageEntrance, blinky.position) || (areCoincident(cageEntrance, blinky.position) && !hasLeftCage))
 	{
+		if (areCoincident(cageEntrance, blinky.position) && !hasLeftCage)
+			hasLeftCage = true;
+
 		for (int i = 0; i < MOVEMENTS_COUNT; i++)
 		{
 			if (MOVEMENTS[i] == opposite)
@@ -30,7 +33,7 @@ void moveBlinky(Entity& blinky, const Map& map, const Entity* const* allEntities
 			}
 
 			Point currentFuturePosition = getNextPosition(blinky.position, MOVEMENTS[i]);
-			int currentShortestDistance = squaredDistance(currentFuturePosition, allEntities[PLAYER_INDEX]->position);
+			int currentShortestDistance = squaredDistance(currentFuturePosition, targetPosition);
 			if (shortestDistance == -1 || currentShortestDistance < shortestDistance)
 			{
 				if (canMoveOn(map, currentFuturePosition) && !willStepOnGhost(allEntities, currentFuturePosition))
@@ -42,10 +45,24 @@ void moveBlinky(Entity& blinky, const Map& map, const Entity* const* allEntities
 			}
 		}
 	}
-
+	
 	if (!willStepOnGhost(allEntities, futurePosition))
 	{
 		blinky.position = futurePosition;
 		blinky.movementDirection = newDirection;
 	}
+}
+
+void movePinky(Entity& pinky, const Map& map, const Entity* const* allEntities, const Point& cageEntrance, bool& hasLeftCage)
+{
+	Point targetPosition = allEntities[PLAYER_INDEX]->position;
+	for (int i = 0; i < 4; i++)
+	{
+		targetPosition = getNextPosition(targetPosition, allEntities[PLAYER_INDEX]->movementDirection);
+	}
+	if (allEntities[PLAYER_INDEX]->movementDirection == MOVEMENT_UP)
+	{
+		targetPosition.x = targetPosition.x - 4;
+	}
+	moveBlinky(pinky, map, allEntities, targetPosition, cageEntrance, hasLeftCage);
 }

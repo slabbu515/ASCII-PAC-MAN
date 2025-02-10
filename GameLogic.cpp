@@ -114,6 +114,9 @@ void startGame()
 	Entity blinky;
 	if (!initializeEntity(blinky, map, BLINKY_COLOUR, BLINKY_SYMBOL, MOVEMENT_DOWN))
 		return;
+	Entity pinky;
+	if (!initializeEntity(pinky, map, PINKY_COLOUR, PINKY_SYMBOL, MOVEMENT_UP))
+		return;
 
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -123,10 +126,8 @@ void startGame()
 	cursor.bVisible = 0;
 	SetConsoleCursorInfo(consoleHandle, &cursor);
 
-	//To do: Add hasLeftCage to moveBlinky, fix moveBlinky
-
 	bool hasLeftCage[ALL_ENTITIES_COUNT - 1]{};
-	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky };
+	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky, &pinky };
 
 	bool isGameOver = false;
 	bool frightened = false;
@@ -177,7 +178,10 @@ void startGame()
 		}
 
 		movePlayer(player, map, frightenedTimer, frightened, score);
-		moveBlinky(blinky, map, allEntities, cageEntrance);
+		moveBlinky(blinky, map, allEntities, allEntities[PLAYER_INDEX]->position, cageEntrance, hasLeftCage[BLINKY_INDEX-1]);
+		if(score>=20)
+			movePinky(pinky, map, allEntities, cageEntrance, hasLeftCage[PINKY_INDEX - 1]);
+		
 		//Move Other Ghosts
 	}
 
