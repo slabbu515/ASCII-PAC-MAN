@@ -14,17 +14,23 @@ const char PLAYER_SYMBOL = 'C';
 
 const int BLINKY_COLOUR = 4; //Red
 const char BLINKY_SYMBOL = 'B';
+const size_t BLINKY_THRESHOLD = 0;
 
 const int PINKY_COLOUR = 12; //Pink
 const char PINKY_SYMBOL = 'P';
+const size_t PINKY_THRESHOLD = 20;
 
 const int INKY_COLOUR = 1; //Blue
 const char INKY_SYMBOL = 'I';
+const size_t INKY_THRESHOLD = 40;
 
 const int CLYDE_COLOUR = 2; //Green
 const char CLYDE_SYMBOL = 'Y';
+const size_t CLYDE_THRESHOLD = 60;
 const double CLYDE_DISTANCE = 8.0;
 const double EPSILON = 1e-5;
+
+const size_t THRESHOLDS[] = { BLINKY_THRESHOLD, PINKY_THRESHOLD, INKY_THRESHOLD, CLYDE_THRESHOLD };
 
 const int ALL_ENTITIES_COUNT = 5;
 const int PLAYER_INDEX = 0;
