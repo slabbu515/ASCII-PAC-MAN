@@ -1,5 +1,6 @@
 #include "Point.h"
-#include <cmath>
+#include "HelperFunctions.h"
+#include "Constants.h"
 
 bool areCoincident(const Point& point, int x, int y)
 {
@@ -28,5 +29,5 @@ Point getReversedVector(const Point& pointA, const Point& pointB)
 
 double distance(const Point& pointA, const Point& pointB)
 {
-    return sqrt(squaredDistance(pointA, pointB));
+    return mySqrt(squaredDistance(pointA, pointB), EPSILON);
 }

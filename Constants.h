@@ -24,6 +24,7 @@ const char INKY_SYMBOL = 'I';
 const int CLYDE_COLOUR = 2; //Green
 const char CLYDE_SYMBOL = 'Y';
 const double CLYDE_DISTANCE = 8.0;
+const double EPSILON = 1e-5;
 
 const int ALL_ENTITIES_COUNT = 5;
 const int PLAYER_INDEX = 0;

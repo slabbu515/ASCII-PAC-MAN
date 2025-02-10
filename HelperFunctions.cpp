@@ -59,3 +59,23 @@ char getOppositeDirection(char direction)
 	
 	return -1;
 }
+
+double myAbs(double number)
+{
+	return number >= 0 ? number : -number;
+}
+
+double mySqrt(double number, double epsilon)
+{
+	if (number == 0) return 0;
+
+	double xk;
+	double xk1 = number;
+
+	do {
+		xk = xk1;
+		xk1 = (xk + number / xk) / 2;
+	} while (myAbs(xk - xk1) >= epsilon);
+
+	return xk1;
+}
