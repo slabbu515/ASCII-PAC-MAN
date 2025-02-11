@@ -68,7 +68,7 @@ bool overlappingWithGhost(const Entity* const* allEntities)
 {
 	for (int i = BLINKY_INDEX; i < ALL_ENTITIES_COUNT; i++)
 	{
-		if(areCoincident(allEntities[PLAYER_INDEX]->position, allEntities[i]->position))
+		if (areCoincident(allEntities[PLAYER_INDEX]->position, allEntities[i]->position))
 			return true;
 	}
 	return false;
@@ -114,13 +114,13 @@ void loadEntities(Map& map, Entity& player, Entity& blinky, Entity& pinky, Entit
 
 void randomMovement(const Map& map, Entity* const* allEntities, const Point& cageEntrance, bool hasLeftCage, Entity& current)
 {
-	srand(time(NULL));
+
 	char opposite = getOppositeDirection(current.movementDirection);
 	while (true)
 	{
 		int random = rand() % MOVEMENTS_COUNT;
 		Point futurePosition = getNextPosition(current.position, MOVEMENTS[random]);
-		if (MOVEMENTS[random] != opposite && canMoveOn(map, futurePosition)  && !willStepOnGhost(allEntities, futurePosition))
+		if (MOVEMENTS[random] != opposite && canMoveOn(map, futurePosition) && !willStepOnGhost(allEntities, futurePosition))
 		{
 			if (!areCoincident(cageEntrance, current.position) || (areCoincident(cageEntrance, current.position) && !hasLeftCage))
 			{
@@ -165,6 +165,7 @@ void moveGhosts(const Map& map, Entity* const* allEntities, const Point& cageEnt
 
 void startGame()
 {
+	srand(time(NULL));
 	Map map;
 	Point maxScore{ 0,0 };
 	initializeMap(map);
@@ -178,7 +179,7 @@ void startGame()
 
 	Entity player, blinky, pinky, inky, clyde;
 	loadEntities(map, player, blinky, pinky, inky, clyde);
-	
+
 	//Handle to manipulate console output
 	HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -189,7 +190,7 @@ void startGame()
 	SetConsoleCursorInfo(consoleHandle, &cursor);
 
 	bool hasLeftCage[ALL_ENTITIES_COUNT - 1]{};
-	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky, &pinky, &inky, &clyde};
+	Entity* allEntities[ALL_ENTITIES_COUNT]{ &player, &blinky, &pinky, &inky, &clyde };
 
 	bool isGameOver = false;
 	bool frightened = false;
